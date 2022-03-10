@@ -9,14 +9,11 @@ workflows:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/python:3.8
+      - image: messa/circleci-python-with-mongodb:latest
 
     steps:
       - checkout
       # - setup_remote_docker
-      - run:
-          name: MongoDB Install
-          command: apt-get install -y mongodb
       - run:
           name: create user
           command: mongodb && mongo --eval 'db.createUser({ "user":"root", "pwd":"root", "roles":[ { "role":"userAdminAnyDatabase", "db":"admin" } ] })'
