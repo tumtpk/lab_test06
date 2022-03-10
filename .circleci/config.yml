@@ -16,9 +16,10 @@ jobs:
       - checkout
       - run:
           name: MongoDB Install
-          command: |
-            sudo apt-get install -y mongodb
-      -run: mongodb && mongo --eval db.createUser({ user: "myrootuser", pwd: "mypassword", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] })
+          command: sudo apt-get install -y mongodb
+      - run: 
+          name: create user
+          command: mongodb && mongo --eval 'db.createUser({ "user":"myrootuser", "pwd":"mypassword", "roles":[ { "role":"userAdminAnyDatabase", "db":"admin" } ] })'
       - python/install-packages:
           pkg-manager: pip
       - run: pip install pytest requests
