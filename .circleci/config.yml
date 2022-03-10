@@ -16,7 +16,7 @@ jobs:
       # - setup_remote_docker
       - run:
           name: create user
-          command: mongodb && mongo --eval 'db.createUser({ "user":"root", "pwd":"root", "roles":[ { "role":"userAdminAnyDatabase", "db":"admin" } ] })'
+          command: mongo --eval 'db.createUser({ "user":"root", "pwd":"root", "roles":[ { "role":"userAdminAnyDatabase", "db":"admin" } ] })'
       - python/install-packages:
           pkg-manager: pip
       - run: pip install pytest requests
