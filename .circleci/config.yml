@@ -9,14 +9,9 @@ workflows:
 jobs:
   build-and-test:
     docker:
-      - image: messa/circleci-python-with-mongodb:latest
-
+      - image: cimg/python:3.8
     steps:
       - checkout
-      # - setup_remote_docker
-      - run:
-          name: create user
-          command: mongo --eval 'db.createUser({ "user":"root", "pwd":"root", "roles":[ { "role":"userAdminAnyDatabase", "db":"admin" } ] })'
       - python/install-packages:
           pkg-manager: pip
       - run: pip install pytest requests
