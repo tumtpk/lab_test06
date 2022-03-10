@@ -3,10 +3,11 @@ orbs:
   python: circleci/python@1.4.0
 
 workflows:
-  sample:
+  my-workflow:
     jobs:
-      - build-and-test
-        context: lab_test06
+      - build-and-test:
+          context:
+            - lab_test06
 
 jobs:
   build-and-test:
