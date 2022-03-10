@@ -6,17 +6,14 @@ workflows:
   sample:
     jobs:
       - build-and-test
+        context: lab_test06
+
 jobs:
   build-and-test:
     docker:
       - image: cimg/python:3.8
     steps:
       - checkout
-      - run:
-          name: Setup Virtual env
-          command: |
-            virtualenv -p python3.8 env            
-            echo "source ./env/bin/activate" >> $BASH_ENV
       - python/install-packages:
           pkg-manager: pip
       - run: pip install pytest requests
