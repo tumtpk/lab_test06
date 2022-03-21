@@ -81,10 +81,10 @@ workflows:
             - build-and-test
       - deploy:
           context:
-            - aws
+            - aws_lab06
           requires:
             - build_and_publish
-          filters:        
+          filters:
             branches:
               only:
                 - main
