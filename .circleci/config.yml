@@ -32,7 +32,7 @@ jobs:
       - run: pip install pytest requests
       - run:
           name: Setup Virtual env
-          command: |            
+          command: |
             virtualenv -p python3.8 env            
             echo "source ./env/bin/activate" >> $BASH_ENV
       - run:
@@ -53,8 +53,8 @@ jobs:
             - function.zip
 
   deploy:
-    executor: aws-cli/default  
-    steps:    
+    executor: aws-cli/default
+    steps:
       - attach_workspace:
           at: ./
       - aws-cli/setup:
@@ -62,10 +62,10 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
-          name: Upload to S3        
+          name: Upload to S3
           command: aws s3 cp function.zip s3://tumtpk/function.zip
-      - run:        
-          name: Deploy new Lambda        
+      - run:
+          name: Deploy new Lambda
           command: aws lambda update-function-code --function-name tumtpk --s3-bucket tumtpk --s3-key function.zip
 
 workflows:
