@@ -34,11 +34,11 @@ jobs:
           name: Create ENV
           command: env > .env
       - run: python -m site
-      # - run:
-      #     name: Create Zipfile archive of Dependencies
-      #     command: |
-      #       cd /home/circleci/.pyenv/versions/3.8.13/lib/python3.8/site-packages
-      #       zip -r9 /home/function.zip .
+      - run:
+          name: Create Zipfile archive of Dependencies
+          command: |
+            cd /home/circleci/.pyenv/versions/3.8.13/lib/python3.8/site-packages
+            zip -r9 ../../../../../../../../function.zip .
       - run:
           name: Add App to Zipfile
           command: zip -g ./function.zip -r ./
@@ -48,15 +48,20 @@ jobs:
             - function.zip
 
   # deploy:
-  #   executor: gcp-cli/default
-  #   steps:
-  #     - gcp-cli/install
-  #     - gcp-cli/initialize
+  #   executor: aws-cli/default  
+  #   steps:    
+  #     - attach_workspace:
+  #         at: ./
+  #     - aws-cli/setup:
+  #         aws-region: AWS_DEFAULT_REGION
+  #         aws-access-key-id: AWS_ACCESS_KEY_ID
+  #         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
   #     - run:
-  #         name: deploy service
-  #         command: |
-  #           export cmd='sudo docker stop $(docker ps -a -q) || true && sudo docker rm $(docker ps -a -q) || true && docker image prune -a -f || true && docker run -d -p 80:8000'
-  #           gcloud --quiet compute ssh  "$GCE_INSTANCE_NAME" --tunnel-through-iap --command="$cmd $IMAGE_NAME"
+  #         name: Upload to S3        
+  #         command: aws s3 cp function.zip s3://<YOUR_S3_BUCKET_NAME>/function.zip
+  #     - run:        
+  #         name: Deploy new Lambda        
+  #         command: aws lambda update-function-code --function-name <YOUR_LAMBDA_NAME> --s3-bucket <your_s3_bucket_name> --s3-key function.zip
 
 workflows:
   my-workflow:
@@ -69,6 +74,8 @@ workflows:
             - lab_test06
           requires:
             - build-and-test
-      #  - deploy:
+      # - deploy:
+      #     context:
+      #       - lab_test06
       #     requires:
       #       - build_and_publish
