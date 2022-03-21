@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Create Zipfile archive of Dependencies
           command: |
-            cd home/lib/python3.8/site-packages
+            cd /usr/lib/python3.8/site-packages
             zip -r9 path/to/root/function.zip .
       - run:
           name: Add App to Zipfile
