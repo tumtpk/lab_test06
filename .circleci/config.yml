@@ -33,6 +33,7 @@ jobs:
       - run:
           name: Create ENV
           command: env > .env
+      - run: python -m site
       - run:
           name: Create Zipfile archive of Dependencies
           command: |
