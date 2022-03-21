@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  python: circleci/python@0.3.2
+  python: circleci/python@1.4.0
   aws-cli: circleci/aws-cli@1.2.1
 
 executors:
@@ -9,7 +9,7 @@ executors:
       - image: cimg/python:3.8
 
 jobs:
-  test:
+  build-and-test:
     executor: python-linter
     steps:
       - checkout
@@ -19,14 +19,21 @@ jobs:
       - run:
           name: Create ENV
           command: env > .env
+      - run: echo ${USER_NAME}
       - run:
           name: Run tests
           command: python -m pytest
 
-  build_and_zip:
+  build_and_publish:
     executor: python-linter
     steps:
       - checkout
+      - python/install-packages:
+          pkg-manager: pip
+      - run: pip install pytest requests
+      - run:
+          name: Create ENV
+          command: env > .env
       - run:
           name: Create Zipfile archive of Dependencies
           command: |
@@ -54,14 +61,14 @@ jobs:
 workflows:
   my-workflow:
     jobs:
-      - test:
+      - build-and-test:
           context:
             - lab_test06
       - build_and_publish:
           context:
             - lab_test06
           requires:
-            - test
+            - build-and-test
       #  - deploy:
       #     requires:
       #       - build_and_publish
