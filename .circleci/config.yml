@@ -31,21 +31,26 @@ jobs:
           pkg-manager: pip
       - run: pip install pytest requests
       - run:
+          name: Setup Virtual env
+          command: |            
+            virtualenv -p python3.8 env            
+            echo "source ./env/bin/activate" >> $BASH_ENV
+      - run:
           name: Create ENV
           command: env > .env
       - run: python -m site
-      - run:
-          name: Create Zipfile archive of Dependencies
-          command: |
-            cd /home/circleci/.pyenv/versions/3.8.13/lib/python3.8/site-packages
-            zip -r9 ../../../../../../../../function.zip .
-      - run:
-          name: Add App to Zipfile
-          command: zip -g ./function.zip -r ./
-      - persist_to_workspace:
-          root: .
-          paths:
-            - function.zip
+      # - run:
+      #     name: Create Zipfile archive of Dependencies
+      #     command: |
+      #       cd /home/circleci/.pyenv/versions/3.8.13/lib/python3.8/site-packages
+      #       zip -r9 ../../../../../../../../function.zip .
+      # - run:
+      #     name: Add App to Zipfile
+      #     command: zip -g ./function.zip -r ./
+      # - persist_to_workspace:
+      #     root: .
+      #     paths:
+      #       - function.zip
 
   # deploy:
   #   executor: aws-cli/default  
