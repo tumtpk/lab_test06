@@ -19,7 +19,6 @@ jobs:
       - run:
           name: Create ENV
           command: env > .env
-      - run: echo ${USER_NAME}
       - run:
           name: Run tests
           command: python -m pytest
@@ -37,7 +36,7 @@ jobs:
       - run:
           name: Create Zipfile archive of Dependencies
           command: |
-            cd env/lib/python3.8/site-packages
+            cd home/lib/python3.8/site-packages
             zip -r9 path/to/root/function.zip .
       - run:
           name: Add App to Zipfile
