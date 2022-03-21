@@ -84,3 +84,7 @@ workflows:
             - aws
           requires:
             - build_and_publish
+          filters:        
+            branches:
+              only:
+                - main
