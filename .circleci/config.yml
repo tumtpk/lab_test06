@@ -52,21 +52,21 @@ jobs:
           paths:
             - function.zip
 
-  # deploy:
-  #   executor: aws-cli/default  
-  #   steps:    
-  #     - attach_workspace:
-  #         at: ./
-  #     - aws-cli/setup:
-  #         aws-region: AWS_DEFAULT_REGION
-  #         aws-access-key-id: AWS_ACCESS_KEY_ID
-  #         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-  #     - run:
-  #         name: Upload to S3        
-  #         command: aws s3 cp function.zip s3://<YOUR_S3_BUCKET_NAME>/function.zip
-  #     - run:        
-  #         name: Deploy new Lambda        
-  #         command: aws lambda update-function-code --function-name <YOUR_LAMBDA_NAME> --s3-bucket <your_s3_bucket_name> --s3-key function.zip
+  deploy:
+    executor: aws-cli/default  
+    steps:    
+      - attach_workspace:
+          at: ./
+      - aws-cli/setup:
+          aws-region: AWS_DEFAULT_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          name: Upload to S3        
+          command: aws s3 cp function.zip s3://tumtpk/function.zip
+      - run:        
+          name: Deploy new Lambda        
+          command: aws lambda update-function-code --function-name tumtpk --s3-bucket tumtpk --s3-key function.zip
 
 workflows:
   my-workflow:
@@ -79,8 +79,8 @@ workflows:
             - lab_test06
           requires:
             - build-and-test
-      # - deploy:
-      #     context:
-      #       - lab_test06
-      #     requires:
-      #       - build_and_publish
+      - deploy:
+          context:
+            - aws
+          requires:
+            - build_and_publish
