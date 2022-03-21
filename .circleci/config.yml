@@ -39,18 +39,18 @@ jobs:
           name: Create ENV
           command: env > .env
       - run: python -m site
-      # - run:
-      #     name: Create Zipfile archive of Dependencies
-      #     command: |
-      #       cd /home/circleci/.pyenv/versions/3.8.13/lib/python3.8/site-packages
-      #       zip -r9 ../../../../../../../../function.zip .
-      # - run:
-      #     name: Add App to Zipfile
-      #     command: zip -g ./function.zip -r ./
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #       - function.zip
+      - run:
+          name: Create Zipfile archive of Dependencies
+          command: |
+            cd env/lib/python3.7/site-packages
+            zip -r9 ../../../../function.zip .
+      - run:
+          name: Add App to Zipfile
+          command: zip -g ./function.zip -r ./
+      - persist_to_workspace:
+          root: .
+          paths:
+            - function.zip
 
   # deploy:
   #   executor: aws-cli/default  
